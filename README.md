@@ -93,3 +93,30 @@ You are required to submit BOTH of the following for review:
 ---
 
 © 2020 Trilogy Education Services, a 2U, Inc. brand. All Rights Reserved.
+
+## NOTES
+
+```
+<div class="row">
+        <div class="input-group">
+          <div class="">
+            <span class="hour col-3">9AM</span>
+          </div>
+          <textarea
+            class="form-control present description time-block"
+            aria-label="With textarea"
+          ></textarea>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="hour">10AM</span>
+          </div>
+          <textarea
+            class="form-control present description time-block"
+            aria-label="With textarea"
+          ></textarea>
+        </div>
+      </div>
+```
