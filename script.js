@@ -13,6 +13,9 @@ $(document).ready(function () {
     "col-11 time-block description past"
   );
 
+  // targets the paragraph element for the current day and date
+  var currentDay = $("#currentDay");
+
   // JS VARIABLES
 
   // temp array of times to populate workday
@@ -28,7 +31,12 @@ $(document).ready(function () {
     "5PM",
   ];
   // FUNCTION DEFINITIONS
-
+  function populateDate() {
+    // sets current day and date
+    currentDay.text(
+      moment().format("dddd") + ", " + moment().format("MMMM Do")
+    );
+  }
   // populates page with the time blocks
   function populateTimeBlocks() {
     for (var i = 0; i < timeArray.length; i++) {
@@ -62,7 +70,7 @@ $(document).ready(function () {
     }
   }
   // FUNCTION CALLS
-
+  populateDate();
   populateTimeBlocks();
   // EVENT LISTENERS
 });
