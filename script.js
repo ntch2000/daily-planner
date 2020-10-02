@@ -19,20 +19,35 @@ $(document).ready(function () {
   // JS VARIABLES
 
   // temp array of times to populate workday
-  var timeArray = [
-    "9AM",
-    "10AM",
-    "11AM",
-    "12PM",
-    "1PM",
-    "2PM",
-    "3PM",
-    "4PM",
-    "5PM",
-  ];
+  // var timeArray = [
+  //   "9AM",
+  //   "10AM",
+  //   "11AM",
+  //   "12PM",
+  //   "1PM",
+  //   "2PM",
+  //   "3PM",
+  //   "4PM",
+  //   "5PM",
+  // ];
 
-  // grabs the hour of the current time and formats it to the  proper format for comparison to the times in the array
-  var timeHour = moment().format("hA");
+  // array of moment objects for each hour of the work day
+  var hours = [];
+  function workHours() {
+    for (var i = 9; i < 18; i++) {
+      hours.push(moment({ hour: i }));
+      console.log(hours);
+    }
+    console.log(hours.length);
+    //var momentObj = moment({ hour: 9 });
+    console.log("hours " + hours[1].format("hA"));
+  }
+  // for (var i = 0; i < momentObj.length; i++) {
+
+  // }
+
+  // grabs the hour of the current time for comparison to the times in the array --- temporary set to 11 for comparison
+  var timeHour = moment({ hours: 11 });
   console.log(timeHour);
 
   // FUNCTION DEFINITIONS
@@ -44,26 +59,29 @@ $(document).ready(function () {
   }
   // populates page with the time blocks
   function populateTimeBlocks() {
-    for (var i = 0; i < timeArray.length; i++) {
+    for (var i = 0; i < hours.length; i++) {
       var containerEl = $(".container");
       var rowDivEl = $("<div>").attr("class", "row time-block");
       // potentially move spacing and text location to css file
       var timeDivEl = $("<div>").attr("class", "col-1 hour pt-2 text-right");
 
-      console.log(timeArray[0]);
+      console.log(hours[0]);
       // will need to add past/present/future class based on time of day
+
       // sets the bg color of the current time block to red
-      if (timeArray[i] === timeHour) {
+      if (hours[i].isSame(timeHour)) {
         var descriptionDivEl = $("<textarea>").attr(
           "class",
           "col-10 description present"
         );
-      } else if (timeArray[i] < timeHour) {
+      } // checks for hours that have passed and sets bg color to grey
+      else if (hours[i].isBefore(timeHour)) {
         var descriptionDivEl = $("<textarea>").attr(
           "class",
           "col-10 description past"
         );
-      } else {
+      } // hours in the future are set to green
+      else {
         // if time is less than current time make past
         // if time is current time make present
         // if time is greater than current time make future
@@ -75,7 +93,7 @@ $(document).ready(function () {
       var saveBtn = $("<button>").attr("class", "saveBtn fas fa-save col-1");
 
       // sets time text to the time slot
-      var displayTime = timeArray[i];
+      var displayTime = hours[i].format("hA");
       timeDivEl.text(displayTime);
 
       // adds time slot to row
@@ -93,6 +111,7 @@ $(document).ready(function () {
   }
   // FUNCTION CALLS
   populateDate();
+  workHours();
   populateTimeBlocks();
 
   // var m = moment();
