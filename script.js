@@ -18,21 +18,18 @@ $(document).ready(function () {
 
   // JS VARIABLES
 
-  // temp array of times to populate workday
-  // var timeArray = [
-  //   "9AM",
-  //   "10AM",
-  //   "11AM",
-  //   "12PM",
-  //   "1PM",
-  //   "2PM",
-  //   "3PM",
-  //   "4PM",
-  //   "5PM",
-  // ];
-
   // array of moment objects for each hour of the work day
   var hours = [];
+
+  // grabs the hour of the current time for comparison to the times in the array
+  var timeHour = moment();
+
+  // object array to save scheduled items
+  var savedSchedule = [];
+
+  var storedSchedule = JSON.parse(localStorage.getItem("schedule"));
+
+  // FUNCTION DEFINITIONS
 
   // function populates the array used to store hours of work
   function workHours() {
@@ -41,17 +38,13 @@ $(document).ready(function () {
     }
   }
 
-  // grabs the hour of the current time for comparison to the times in the array
-  var timeHour = moment();
-  console.log(timeHour);
-
-  // FUNCTION DEFINITIONS
+  // sets the current day and date to the page
   function populateDate() {
-    // sets current day and date
     currentDay.text(
       moment().format("dddd") + ", " + moment().format("MMMM Do")
     );
   }
+
   // populates page with the time blocks
   function populateTimeBlocks() {
     for (var i = 0; i < hours.length; i++) {
@@ -66,19 +59,38 @@ $(document).ready(function () {
           "class",
           "col-10 description present"
         );
+        descriptionDivEl.attr("id", i);
+        //descriptionDivEl.text("Testing " + i);
       } // checks for hours that have passed and sets bg color to grey
       else if (hours[i].isBefore(timeHour, "hour")) {
         var descriptionDivEl = $("<textarea>").attr(
           "class",
           "col-10 description past"
         );
+        descriptionDivEl.attr("id", i);
+        //descriptionDivEl.text("Testing " + i);
       } // hours in the future are set to green
       else {
         var descriptionDivEl = $("<textarea>").attr(
           "class",
           "col-10 description future"
         );
+        descriptionDivEl.attr("id", i);
+        //descriptionDivEl.text("Testing " + i);
       }
+
+      // populate saved schedule information
+
+      console.log(descriptionDivEl.attr("id"));
+      //console.log(Number.parseInt(storedSchedule[1].index));
+      console.log(i);
+      for (var x = 0; x < storedSchedule.length; x++) {
+        if (descriptionDivEl.attr("id") === storedSchedule[x].index) {
+          console.log("match");
+          descriptionDivEl.val(storedSchedule[x].text);
+        }
+      }
+
       var saveBtn = $("<button>").attr("class", "saveBtn fas fa-save col-1");
 
       // formats and sets time text to the time slot
@@ -98,10 +110,36 @@ $(document).ready(function () {
       containerEl.append(rowDivEl);
     }
   }
+  function populateSchedule() {
+    var storedSchedule = JSON.parse(localStorage.getItem("schedule"));
+    console.log(storedSchedule);
+    if (storedSchedule !== null) {
+      for (var i = 0; i < hours.length; i++) {
+        //console.log(storedSchedule[i]);
+        var descriptionId = descriptionDivEl.attr("id");
+        console.log(descriptionId + " " + i);
+        descriptionDivEl.html("test");
+      }
+    }
+  }
+  function saveActivity(target) {
+    //console.log("testing");
+    var element = target.prev(".description");
+    var textInfo = element.val();
+    var index = element.attr("id");
+    console.log("saved " + textInfo + " " + index);
+
+    savedSchedule.push({ index: index, text: textInfo });
+    localStorage.setItem("schedule", JSON.stringify(savedSchedule));
+
+    //   scoreArray.push({ name: initials, score: finalScore });
+    // localStorage.setItem("userScores", JSON.stringify(scoreArray));
+  }
   // FUNCTION CALLS
   populateDate();
   workHours();
   populateTimeBlocks();
+  //populateSchedule();
 
   // var m = moment();
   // console.log("test moment stuff");
@@ -113,5 +151,13 @@ $(document).ready(function () {
   // var readable = m.format("hA");
   // console.log(readable);
   // console.log(timeArray[3]);
+
   // EVENT LISTENERS
+
+  $(".saveBtn").on("click", function () {
+    //console.log(value);
+    //event.preventDefault();
+    //console.log("testing");
+    saveActivity($(this));
+  });
 });
