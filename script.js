@@ -33,21 +33,16 @@ $(document).ready(function () {
 
   // array of moment objects for each hour of the work day
   var hours = [];
+
+  // function populates the array used to store hours of work
   function workHours() {
     for (var i = 9; i < 18; i++) {
       hours.push(moment({ hour: i }));
-      console.log(hours);
     }
-    console.log(hours.length);
-    //var momentObj = moment({ hour: 9 });
-    console.log("hours " + hours[1].format("hA"));
   }
-  // for (var i = 0; i < momentObj.length; i++) {
 
-  // }
-
-  // grabs the hour of the current time for comparison to the times in the array --- temporary set to 11 for comparison
-  var timeHour = moment({ hours: 11 });
+  // grabs the hour of the current time for comparison to the times in the array
+  var timeHour = moment();
   console.log(timeHour);
 
   // FUNCTION DEFINITIONS
@@ -65,26 +60,20 @@ $(document).ready(function () {
       // potentially move spacing and text location to css file
       var timeDivEl = $("<div>").attr("class", "col-1 hour pt-2 text-right");
 
-      console.log(hours[0]);
-      // will need to add past/present/future class based on time of day
-
-      // sets the bg color of the current time block to red
-      if (hours[i].isSame(timeHour)) {
+      // sets the bg color of the current hour time block to red
+      if (hours[i].isSame(timeHour, "hour")) {
         var descriptionDivEl = $("<textarea>").attr(
           "class",
           "col-10 description present"
         );
       } // checks for hours that have passed and sets bg color to grey
-      else if (hours[i].isBefore(timeHour)) {
+      else if (hours[i].isBefore(timeHour, "hour")) {
         var descriptionDivEl = $("<textarea>").attr(
           "class",
           "col-10 description past"
         );
       } // hours in the future are set to green
       else {
-        // if time is less than current time make past
-        // if time is current time make present
-        // if time is greater than current time make future
         var descriptionDivEl = $("<textarea>").attr(
           "class",
           "col-10 description future"
@@ -92,7 +81,7 @@ $(document).ready(function () {
       }
       var saveBtn = $("<button>").attr("class", "saveBtn fas fa-save col-1");
 
-      // sets time text to the time slot
+      // formats and sets time text to the time slot
       var displayTime = hours[i].format("hA");
       timeDivEl.text(displayTime);
 
