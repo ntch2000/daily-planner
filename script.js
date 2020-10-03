@@ -25,9 +25,7 @@ $(document).ready(function () {
   var timeHour = moment();
 
   // object array to save scheduled items
-  var savedSchedule = [];
-
-  var storedSchedule = JSON.parse(localStorage.getItem("schedule"));
+  var storedSchedule = JSON.parse(localStorage.getItem("schedule")) || [];
 
   // FUNCTION DEFINITIONS
 
@@ -80,16 +78,18 @@ $(document).ready(function () {
       }
 
       // populate saved schedule information
+      if (storedSchedule !== null) {
+        for (var x = 0; x < storedSchedule.length; x++) {
+          if (descriptionDivEl.attr("id") === storedSchedule[x].index) {
+            console.log("match");
+            descriptionDivEl.val(storedSchedule[x].text);
+          }
+        }
+      }
 
       console.log(descriptionDivEl.attr("id"));
       //console.log(Number.parseInt(storedSchedule[1].index));
       console.log(i);
-      for (var x = 0; x < storedSchedule.length; x++) {
-        if (descriptionDivEl.attr("id") === storedSchedule[x].index) {
-          console.log("match");
-          descriptionDivEl.val(storedSchedule[x].text);
-        }
-      }
 
       var saveBtn = $("<button>").attr("class", "saveBtn fas fa-save col-1");
 
@@ -111,26 +111,25 @@ $(document).ready(function () {
     }
   }
   function populateSchedule() {
-    var storedSchedule = JSON.parse(localStorage.getItem("schedule"));
-    console.log(storedSchedule);
     if (storedSchedule !== null) {
-      for (var i = 0; i < hours.length; i++) {
-        //console.log(storedSchedule[i]);
-        var descriptionId = descriptionDivEl.attr("id");
-        console.log(descriptionId + " " + i);
-        descriptionDivEl.html("test");
+      for (var x = 0; x < storedSchedule.length; x++) {
+        if (descriptionDivEl.attr("id") === storedSchedule[x].index) {
+          console.log("match");
+          descriptionDivEl.val(storedSchedule[x].text);
+        }
       }
     }
   }
+
   function saveActivity(target) {
-    //console.log("testing");
+    console.log(storedSchedule);
     var element = target.prev(".description");
     var textInfo = element.val();
     var index = element.attr("id");
     console.log("saved " + textInfo + " " + index);
 
-    savedSchedule.push({ index: index, text: textInfo });
-    localStorage.setItem("schedule", JSON.stringify(savedSchedule));
+    storedSchedule.push({ index: index, text: textInfo });
+    localStorage.setItem("schedule", JSON.stringify(storedSchedule));
 
     //   scoreArray.push({ name: initials, score: finalScore });
     // localStorage.setItem("userScores", JSON.stringify(scoreArray));
