@@ -11,12 +11,6 @@ $(document).ready(function () {
   // potentially move spacing and text location to css file
   var timeDivEl = $("<div>").attr("class", "col-1 hour pt-1 text-right");
 
-  // will need to add past/present/future class based on time of day
-  var descriptionDivEl = $("<textarea>").attr(
-    "class",
-    "col-10 description past"
-  );
-
   // targets the paragraph element for the current day and date
   var currentDay = $("#currentDay");
 
@@ -47,18 +41,23 @@ $(document).ready(function () {
     );
   }
 
-  // function setBlockColors(index) {
-  //   // sets the bg color of the current hour time block to red
-  //   if (hours[index].isSame(timeHour, "hour")) {
-  //     descriptionDivEl.addClass("present");
-  //   } // checks for hours that have passed and sets bg color to grey
-  //   else if (hours[index].isBefore(timeHour, "hour")) {
-  //     descriptionDivEl.addClass("past");
-  //   } // hours in the future are set to green
-  //   else {
-  //     descriptionDivEl.addClass("future");
-  //   }
-  // }
+  // sets the colors of the time blocks based on the current time
+  function setBlockColors(index, element) {
+    // console.log(timeHour.hours());
+    // console.log(index);
+    // console.log(hours[index].hours());
+    // console.log(element);
+    // sets the bg color of the current hour time block to red
+    if (hours[index].isSame(timeHour, "hour")) {
+      element.addClass("present");
+    } // checks for hours that have passed and sets bg color to grey
+    else if (hours[index].isBefore(timeHour, "hour")) {
+      element.addClass("past");
+    } // hours in the future are set to green
+    else {
+      element.addClass("future");
+    }
+  }
   // populates page with the time blocks
   function populateTimeBlocks() {
     for (var i = 0; i < hours.length; i++) {
@@ -74,32 +73,15 @@ $(document).ready(function () {
       descriptionDivEl.attr("id", i);
 
       // needs to dynamically change based on the continuously checking the time via an interval
-      // will need to add/remove classes based on time
-
-      // sets the bg color of the current hour time block to red
-      if (hours[i].isSame(timeHour, "hour")) {
-        descriptionDivEl.addClass("present");
-      } // checks for hours that have passed and sets bg color to grey
-      else if (hours[i].isBefore(timeHour, "hour")) {
-        descriptionDivEl.addClass("past");
-      } // hours in the future are set to green
-      else {
-        descriptionDivEl.addClass("future");
-      }
 
       // populate saved schedule information
       if (storedSchedule !== null) {
         for (var x = 0; x < storedSchedule.length; x++) {
           if (descriptionDivEl.attr("id") === storedSchedule[x].index) {
-            //console.log("match");
             descriptionDivEl.val(storedSchedule[x].text);
           }
         }
       }
-
-      //console.log(descriptionDivEl.attr("id"));
-      //console.log(Number.parseInt(storedSchedule[1].index));
-      // console.log(i);
 
       var saveBtn = $("<button>").attr("class", "saveBtn fas fa-save col-1");
 
@@ -118,6 +100,9 @@ $(document).ready(function () {
 
       // adds row content to main container
       containerEl.append(rowDivEl);
+
+      // calls function to set the proper colors based on the current time
+      setBlockColors(i, descriptionDivEl);
     }
   }
 
@@ -144,15 +129,11 @@ $(document).ready(function () {
       storedSchedule.push({ index: ind, text: textInfo });
     }
     localStorage.setItem("schedule", JSON.stringify(storedSchedule));
-
-    //   scoreArray.push({ name: initials, score: finalScore });
-    // localStorage.setItem("userScores", JSON.stringify(scoreArray));
   }
   // FUNCTION CALLS
   populateDate();
   workHours();
   populateTimeBlocks();
-  //populateSchedule();
 
   // var m = moment();
   // console.log("test moment stuff");
