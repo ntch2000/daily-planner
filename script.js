@@ -1,5 +1,9 @@
 $(document).ready(function () {
   console.log("hello world");
+
+  // add code to constantly check time and update color blocks
+  // does the schedule need to clear at the end of the day?
+
   // DOM VARIABLES
 
   var containerEl = $(".container");
@@ -43,6 +47,18 @@ $(document).ready(function () {
     );
   }
 
+  // function setBlockColors(index) {
+  //   // sets the bg color of the current hour time block to red
+  //   if (hours[index].isSame(timeHour, "hour")) {
+  //     descriptionDivEl.addClass("present");
+  //   } // checks for hours that have passed and sets bg color to grey
+  //   else if (hours[index].isBefore(timeHour, "hour")) {
+  //     descriptionDivEl.addClass("past");
+  //   } // hours in the future are set to green
+  //   else {
+  //     descriptionDivEl.addClass("future");
+  //   }
+  // }
   // populates page with the time blocks
   function populateTimeBlocks() {
     for (var i = 0; i < hours.length; i++) {
@@ -51,45 +67,39 @@ $(document).ready(function () {
       // potentially move spacing and text location to css file
       var timeDivEl = $("<div>").attr("class", "col-1 hour pt-2 text-right");
 
+      var descriptionDivEl = $("<textarea>").attr(
+        "class",
+        "col-10 description"
+      );
+      descriptionDivEl.attr("id", i);
+
+      // needs to dynamically change based on the continuously checking the time via an interval
+      // will need to add/remove classes based on time
+
       // sets the bg color of the current hour time block to red
       if (hours[i].isSame(timeHour, "hour")) {
-        var descriptionDivEl = $("<textarea>").attr(
-          "class",
-          "col-10 description present"
-        );
-        descriptionDivEl.attr("id", i);
-        //descriptionDivEl.text("Testing " + i);
+        descriptionDivEl.addClass("present");
       } // checks for hours that have passed and sets bg color to grey
       else if (hours[i].isBefore(timeHour, "hour")) {
-        var descriptionDivEl = $("<textarea>").attr(
-          "class",
-          "col-10 description past"
-        );
-        descriptionDivEl.attr("id", i);
-        //descriptionDivEl.text("Testing " + i);
+        descriptionDivEl.addClass("past");
       } // hours in the future are set to green
       else {
-        var descriptionDivEl = $("<textarea>").attr(
-          "class",
-          "col-10 description future"
-        );
-        descriptionDivEl.attr("id", i);
-        //descriptionDivEl.text("Testing " + i);
+        descriptionDivEl.addClass("future");
       }
 
       // populate saved schedule information
       if (storedSchedule !== null) {
         for (var x = 0; x < storedSchedule.length; x++) {
           if (descriptionDivEl.attr("id") === storedSchedule[x].index) {
-            console.log("match");
+            //console.log("match");
             descriptionDivEl.val(storedSchedule[x].text);
           }
         }
       }
 
-      console.log(descriptionDivEl.attr("id"));
+      //console.log(descriptionDivEl.attr("id"));
       //console.log(Number.parseInt(storedSchedule[1].index));
-      console.log(i);
+      // console.log(i);
 
       var saveBtn = $("<button>").attr("class", "saveBtn fas fa-save col-1");
 
@@ -110,25 +120,29 @@ $(document).ready(function () {
       containerEl.append(rowDivEl);
     }
   }
-  function populateSchedule() {
-    if (storedSchedule !== null) {
-      for (var x = 0; x < storedSchedule.length; x++) {
-        if (descriptionDivEl.attr("id") === storedSchedule[x].index) {
-          console.log("match");
-          descriptionDivEl.val(storedSchedule[x].text);
-        }
-      }
-    }
-  }
 
+  // update object array to ensure changed description gets changed at the correct index where old description was at
   function saveActivity(target) {
     console.log(storedSchedule);
     var element = target.prev(".description");
     var textInfo = element.val();
-    var index = element.attr("id");
-    console.log("saved " + textInfo + " " + index);
+    var ind = element.attr("id");
 
-    storedSchedule.push({ index: index, text: textInfo });
+    // finds the index of the selected attribute id in the storedSchedule array
+    var objectIndex = storedSchedule
+      .map(function (par) {
+        return par.index;
+      })
+      .indexOf(ind);
+
+    // if the attribute id already exists in the storeSchedule array, the new information will overwrite the old information
+    if (objectIndex !== -1) {
+      storedSchedule[objectIndex] = { index: ind, text: textInfo };
+    } else {
+      // if the is no saved information with the selected attribute id, a new object with the id and text will be added to the array
+
+      storedSchedule.push({ index: ind, text: textInfo });
+    }
     localStorage.setItem("schedule", JSON.stringify(storedSchedule));
 
     //   scoreArray.push({ name: initials, score: finalScore });
