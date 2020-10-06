@@ -1,14 +1,19 @@
-# daily-planner
+# Daily Planner
 
-## Instructions
+## Description
 
-# 05 Third-Party APIs: Work Day Scheduler
+This application allows user to create a daily work day scheduler for scheduling activities/events during typical work hours (9AM - 5PM). The application keeps track of activities for each hour and color codes the hours based on the current hour of the day. The application will also display the day and date at the top for user reference.
 
-## Your Task
+The time-blocks are dynamically generated using jQuery, HTML, and CSS. The date and time is retrieved with the [Moment.js](https://momentjs.com/) library. Each time block time value is generated with the Moment.js library.
 
-Create a simple calendar application that allows a user to save events for each hour of the day by modifying starter code. This app will run in the browser and feature dynamically updated HTML and CSS powered by jQuery.
+## Table of Contents
 
-You'll need to use the [Moment.js](https://momentjs.com/) library to work with date and time. Be sure to read the documentation carefully and concentrate on using Moment.js in the browser.
+- [Description](#description)
+- [User Story](#user-story)
+- [Acceptance Criteria](#acceptance-criteria)
+- [Installation](#installation)
+- [Application Screenshot](#application-screenshot)
+- [Usage](#usage)
 
 ## User Story
 
@@ -36,63 +41,21 @@ WHEN I refresh the page
 THEN the saved events persist
 ```
 
-## Mock-Up
+## Installation
 
-The following animation demonstrates the application functionality:
+No installation is required for this application. The Daily Planner can be viewed at [Daily Planner](https://ntch2000.github.io/daily-planner/).
 
-![day planner demo](./Assets/05-third-party-apis-homework-demo.gif)
+To see the code used to create the planner, please visit the Github repository at the [Github Repo](https://github.com/ntch2000/daily-planner).
 
-## Grading Requirements
+## Application Screenshot
 
-This homework is graded based on the following criteria:
+## Usage
 
-### Technical Acceptance Criteria: 40%
+To utilize the application, users can enter any information into the time blocks and click the save button. This will save the information entered for that specific time block into local storage. Additional information can be entered into the other time block and saved with the corresponding buttons. This information will persist as the page is reloaded.
 
-- Satisfies all of the above acceptance criteria plus the following:
+Information can also be edited/changed and saved again, which will rewrite the information in local storage. As the time changes, the current hour block will be highlighted red to notify the user of what hour they are in. Hours that have past will be colored grey while hours in the future will be colored green.
 
-  - Uses the Moment.js library to work with date and time
-
-### Deployment: 32%
-
-- Application deployed at live URL
-
-- Application loads with no errors
-
-- Application GitHub URL submitted
-
-- GitHub repo contains application code
-
-### Application Quality: 15%
-
-- Application user experience is intuitive and easy to navigate
-
-- Application user interface style is clean and polished
-
-- Application resembles the mock-up functionality provided in the homework instructions
-
-### Repository Quality: 13%
-
-- Repository has a unique name
-
-- Repository follows best practices for file structure and naming conventions
-
-- Repository follows best practices for class/id naming conventions, indentation, quality comments, etc.
-
-- Repository contains multiple descriptive commit messages
-
-- Repository contains quality README file with description, screenshot, and link to deployed application
-
-## Review
-
-You are required to submit BOTH of the following for review:
-
-- The URL of the functional, deployed application.
-
-- The URL of the GitHub repository. Give the repository a unique name and include a README describing the project.
-
----
-
-© 2020 Trilogy Education Services, a 2U, Inc. brand. All Rights Reserved.
+**This information is updated as the hour changes.**
 
 ## NOTES
 
