@@ -1,15 +1,5 @@
 $(document).ready(function () {
-  console.log("hello world");
-
-  // add code to constantly check time and update color blocks
-  // does the schedule need to clear at the end of the day?
-
   // DOM VARIABLES
-
-  var containerEl = $(".container");
-  var rowDivEl = $("<div>").attr("class", "row");
-  // potentially move spacing and text location to css file
-  var timeDivEl = $("<div>").attr("class", "col-1 hour pt-1 text-right");
 
   // targets the paragraph element for the current day and date
   var currentDay = $("#currentDay");
@@ -43,10 +33,6 @@ $(document).ready(function () {
 
   // sets the colors of the time blocks based on the current time
   function setBlockColors(index, element) {
-    // console.log(timeHour.hours());
-    // console.log(index);
-    // console.log(hours[index].hours());
-    // console.log(element);
     // sets the bg color of the current hour time block to red
     if (hours[index].isSame(timeHour, "hour")) {
       element.addClass("present");
@@ -63,40 +49,31 @@ $(document).ready(function () {
     for (var i = 0; i < hours.length; i++) {
       var containerEl = $(".container");
       var rowDivEl = $("<div>").attr("class", "row time-block");
-      // potentially move spacing and text location to css file
+
       var timeDivEl = $("<div>").attr("class", "col-1 hour pt-2 text-right");
 
       var descriptionDivEl = $("<textarea>").attr(
         "class",
         "col-10 description"
       );
-      descriptionDivEl.attr("id", i);
-
-      // needs to dynamically change based on the continuously checking the time via an interval
+      descriptionDivEl.attr("data-index", i);
 
       // populate saved schedule information
-      if (storedSchedule !== null) {
-        for (var x = 0; x < storedSchedule.length; x++) {
-          if (descriptionDivEl.attr("id") === storedSchedule[x].index) {
-            descriptionDivEl.val(storedSchedule[x].text);
-          }
+      for (var x = 0; x < storedSchedule.length; x++) {
+        if (descriptionDivEl.attr("data-index") === storedSchedule[x].index) {
+          descriptionDivEl.val(storedSchedule[x].text);
         }
       }
 
+      // creates the save button and sets the attributes
       var saveBtn = $("<button>").attr("class", "saveBtn fas fa-save col-1");
 
       // formats and sets time text to the time slot
       var displayTime = hours[i].format("hA");
       timeDivEl.text(displayTime);
 
-      // adds time slot to row
-      rowDivEl.append(timeDivEl);
-
-      // adds description slot to row
-      rowDivEl.append(descriptionDivEl);
-
-      // adds save button to row
-      rowDivEl.append(saveBtn);
+      // adds time slot, description, and save button to row
+      rowDivEl.append(timeDivEl, descriptionDivEl, saveBtn);
 
       // adds row content to main container
       containerEl.append(rowDivEl);
@@ -108,24 +85,23 @@ $(document).ready(function () {
 
   // update object array to ensure changed description gets changed at the correct index where old description was at
   function saveActivity(target) {
-    console.log(storedSchedule);
+    //console.log(storedSchedule);
     var element = target.prev(".description");
     var textInfo = element.val();
-    var ind = element.attr("id");
+    var ind = element.attr("data-index");
 
-    // finds the index of the selected attribute id in the storedSchedule array
+    // finds the index of the selected attribute data-index in the storedSchedule array
     var objectIndex = storedSchedule
       .map(function (par) {
         return par.index;
       })
       .indexOf(ind);
 
-    // if the attribute id already exists in the storeSchedule array, the new information will overwrite the old information
+    // if the attribute data-index already exists in the storeSchedule array, the new information will overwrite the old information
     if (objectIndex !== -1) {
       storedSchedule[objectIndex] = { index: ind, text: textInfo };
     } else {
-      // if the is no saved information with the selected attribute id, a new object with the id and text will be added to the array
-
+      // if the is no saved information with the selected attribute data-index, a new object with the data-index and text will be added to the array
       storedSchedule.push({ index: ind, text: textInfo });
     }
     localStorage.setItem("schedule", JSON.stringify(storedSchedule));
@@ -135,23 +111,10 @@ $(document).ready(function () {
   workHours();
   populateTimeBlocks();
 
-  // var m = moment();
-  // console.log("test moment stuff");
-  // console.log(m.toString());
-  // console.log(m.hour() + " " + m.minute());
-  // console.log(
-  //   moment("2019-06-04 14:00:00").isSame("2019-06-04 14:00:00", "hour")
-  // );
-  // var readable = m.format("hA");
-  // console.log(readable);
-  // console.log(timeArray[3]);
-
   // EVENT LISTENERS
 
+  // saves the activity of the save button that was clicked to local storage
   $(".saveBtn").on("click", function () {
-    //console.log(value);
-    //event.preventDefault();
-    //console.log("testing");
     saveActivity($(this));
   });
 });

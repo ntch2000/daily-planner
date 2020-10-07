@@ -14,6 +14,7 @@ The time-blocks are dynamically generated using jQuery, HTML, and CSS. The date 
 - [Installation](#installation)
 - [Application Screenshot](#application-screenshot)
 - [Usage](#usage)
+- [Credits](#credits)
 
 ## User Story
 
@@ -49,37 +50,19 @@ To see the code used to create the planner, please visit the Github repository a
 
 ## Application Screenshot
 
+![Application Screenshot](./Screenshots/application-screenshot.jpg "Daily Planner Time-blocks")
+_Application Screenshot of main time-blocks with current hour highlighted red_
+
 ## Usage
 
 To utilize the application, users can enter any information into the time blocks and click the save button. This will save the information entered for that specific time block into local storage. Additional information can be entered into the other time block and saved with the corresponding buttons. This information will persist as the page is reloaded.
 
-Information can also be edited/changed and saved again, which will rewrite the information in local storage. As the time changes, the current hour block will be highlighted red to notify the user of what hour they are in. Hours that have past will be colored grey while hours in the future will be colored green.
+Information can also be edited/changed and saved again, which will rewrite the information in local storage. When the page is reloaded, the current hour block will be highlighted red to notify the user of current hour in the local time zone. Hours that have past will be colored grey while hours in the future will be colored green.
 
-**This information is updated as the hour changes.**
+## Credits
 
-## NOTES
+- [Moment.js](https://momentjs.com/) was used throughout this project to get the proper time in order to dynamically generate the html time blocks as well as check the current date and hour.
 
-```
-<div class="row">
-        <div class="input-group">
-          <div class="">
-            <span class="hour col-3">9AM</span>
-          </div>
-          <textarea
-            class="form-control present description time-block"
-            aria-label="With textarea"
-          ></textarea>
-        </div>
-      </div>
-      <div class="row">
-        <div class="input-group">
-          <div class="input-group-prepend">
-            <span class="hour">10AM</span>
-          </div>
-          <textarea
-            class="form-control present description time-block"
-            aria-label="With textarea"
-          ></textarea>
-        </div>
-      </div>
-```
+---
+
+© 2020 Neil Gandhi
